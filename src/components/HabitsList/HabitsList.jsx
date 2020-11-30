@@ -1,46 +1,73 @@
 import React, { Component } from 'react';
-import ProTypes from 'prop-types';
-import HabitItem from './HabitsItem/HabitsItem';
+import PropTypes from 'prop-types';
+import HabitItem from './HabitItem/HabitItem';
+import Modal from '../Modal/Modal';
+import HabitForm from '../HabitsList/HabitForm/HabitForm';
 
 export default class HabitsList extends Component {
-  static proTypes = {
-    prop: PropTypes,
-  };
   state = {
-    habits: [{ id: '1', title: 'zarydka', startDate: '', progress: '' }],
+    habits: [
+      {
+        id: '1',
+        title: 'Зарядка',
+        startDate: '',
+        progress: '',
+      },
+    ],
   };
-  toSetProgress=(satrtData)=>{
-    // (currentData-startData)*100/21
-    const dateNow=Date.now()
-    const
-    const progress=Math.round((dateNow-startData)*100/(21*24*60*60*1000))
-    return progress
-  }
-  toChangeProgress = (id) => {
-    this.setState(prefState => {
-        const obj= prevState.habits.find(habit=>{
-         return habit.id===id
-        })
-        obj.progress=this.toSetProgress(obj.startDate)
-        return (obj)
+  toAddHabit = (habit) => {
+    this.setState(prevState => ({
+      habits: [...prevState.habits, habit],
+    }));
+  };
+
+  toChangeProgress = id => {
+    this.setState(prevState => {
+      const obj = prevState.habits.find(habit => {
+        return habit.id === id;
+      });
+      obj.progress = this.toSetProgress(obj.startDate);
+      return obj;
     });
   };
+
   render() {
-    const {habits}=this.state
+    const { habits } = this.state;
     return (
       <>
         <header>
-          <div>My accaunt</div>
-          <button type="button"></button>
+          <div>Мой аккаунт</div>
+          <button type="button">x</button>
         </header>
-        <div>Календар</div>
-        <h1>Мої звичкі</h1>
-        {this.habits.length ?
-        <ul>
-           {habits.map(habit=>{return <HabitItem key={habit.id} progress={()=>thid.toChangeProgress(habit.id)}/>})}
+        {this.props.showModal && (
+          <Modal modalToggle={this.props.modalToggle}>
+            <HabitForm
+              modalToggle={this.props.modalToggle}
+              toAddHabit={this.toAddHabit}
+            />
+          </Modal>
+        )}
+        <div>Календарь</div>
+        <h1>Мои привычки</h1>
+        {this.state.habits.length ? (
+          <ul>
+            {habits.map(habit => {
+              return (
+                <HabitItem
+                  key={habit.id}
+                  progress=""
+                  // progress={() => this.toChangeProgress(habit.id)}
+                  title={habit.title}
+                />
+              );
+            })}
           </ul>
-           : <p>У вас покі немає звичок</p>}
-        <button type="button"></button>
+        ) : (
+          <p>У вас пока нету привычек Нажмите +, чтобы добавить первую</p>
+        )}
+        <button type="button" onClick={this.props.modalToggle}>
+          +
+        </button>
       </>
     );
   }

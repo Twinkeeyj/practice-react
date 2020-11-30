@@ -1,77 +1,80 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classes from './Profile.module.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import styles from "./Profile.module.css";
 
 class Profile extends Component {
   state = {
-    avatar: '',
-    height: '',
-    weight: '',
-    birthDate: '',
+    avatar: "",
+    height: "",
+    weight: "",
+    birthDate: "",
   };
 
-  handleOnChange = event => {
-    const name = event.target.name;
-    this.setState({ [name]: name.value });
+  handleOnChange = ({ target }) => {
+    this.setState({ [target.name]: target.value });
   };
-  handleOnSubmit = e => {
-    e.preventDefault();
 
-    // ???
-    this.setState({ avatar: '', height: '', weight: '', birthDate: '' });
+  handleOnSubmit = (e) => {
+    e.preventDefalut();
+    // updateProfile(); добавить локику сохранения профиля
+    this.setState({
+      avatar: "",
+      height: "",
+      weight: "",
+      birthDate: "",
+    });
   };
 
   render() {
+    const { avatar, height, weight, birthDate } = this.state;
     return (
       <>
-        <button type="button"></button>
-        <form action="" className={classes.form} onSubmit={this.handleOnSubmit}>
+        <button type="button">Назад</button>
+        <form onSubmit={this.handleOnSubmit}>
           <label>
-            Змінти фото
+            Сменить фото
             <input
-              type="text"
-              value={this.state.avatar}
+              type="file"
+              value={avatar}
               name="avatar"
               onChange={this.handleOnChange}
             />
           </label>
           <label>
-            Зріст
+            Рост
             <input
-              type="text"
-              value={this.state.height}
+              type="number"
+              value={height}
               name="height"
               onChange={this.handleOnChange}
-              placeholder="170cm"
+              placeholder="170 см"
             />
           </label>
           <label>
-            Вага
+            Вес
             <input
-              type="text"
-              value={this.state.weight}
+              type="number"
+              value={weight}
               name="weight"
               onChange={this.handleOnChange}
-              placeholder="170kg"
+              placeholder="70 кг"
             />
           </label>
           <label>
-            Дата народження
+            Дата рождения
             <input
-              type="text"
-              value={this.state.birthDate}
+              type="date"
+              value={birthDate}
               name="birthDate"
               onChange={this.handleOnChange}
-              placeholder="Рік"
+              placeholder="01.01.1990"
             />
           </label>
-          <label>
-            Створити
-            <input type="submit" />
-          </label>
+          <input type="submit" value="Создать" />
         </form>
       </>
     );
   }
 }
+
 export default Profile;
