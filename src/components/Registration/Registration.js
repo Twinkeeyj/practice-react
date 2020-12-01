@@ -1,19 +1,24 @@
-import React, { Component } from "react";
-import styles from "./Registration.module.css";
+import React, { Component } from 'react';
+import styles from './Registration.module.css';
+import { NavLink } from 'react-router-dom';
 
 class Registration extends Component {
   state = {
-    name: "",
-    surname: "",
-    tel: "",
+    name: '',
+    surname: '',
+    tel: '',
   };
   handleChange = ({ target }) => {
     this.setState({
       [target.name]: target.value,
     });
   };
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
+    this.props.history.push({
+      pathname: '/profile',
+    });
+
     alert(JSON.stringify(this.state));
   };
   render() {
@@ -21,9 +26,7 @@ class Registration extends Component {
     return (
       <>
         <div className={styles.header}>
-          <button type="button" className={styles.toBack}>
-            Назад
-          </button>
+          <NavLink to="/">Назад</NavLink>
         </div>
         <form
           action="submit"
@@ -57,6 +60,7 @@ class Registration extends Component {
           />
 
           <input type="submit" value="Дальше" />
+          <NavLink to="/">На головну</NavLink>
         </form>
       </>
     );

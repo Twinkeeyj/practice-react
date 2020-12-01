@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import HabitItem from './HabitItem/HabitItem';
 import Modal from '../Modal/Modal';
 import HabitForm from '../HabitsList/HabitForm/HabitForm';
+import {NavLink} from "react-router-dom"
 
 export default class HabitsList extends Component {
   state = {
@@ -37,7 +38,8 @@ export default class HabitsList extends Component {
       <>
         <header>
           <div>Мой аккаунт</div>
-          <button type="button">x</button>
+          <NavLink to="/profile">Назад</NavLink>
+          {/* <button type="button">x</button> */}
         </header>
         {this.props.showModal && (
           <Modal modalToggle={this.props.modalToggle}>

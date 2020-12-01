@@ -9,12 +9,4 @@ const HabitItem = ({ title, progress }) => (
   </li>
 );
 
-HabitItem.propTypes = {
-  // bla: PropTypes.string,
-};
-
-HabitItem.defaultProps = {
-  // bla: 'test',
-};
-
 export default HabitItem;

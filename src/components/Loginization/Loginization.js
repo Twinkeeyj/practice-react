@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import styles from "./Loginization.module.css";
+import React, { Component } from 'react';
+import styles from './Loginization.module.css';
+import {NavLink} from "react-router-dom"
 
 class Loginization extends Component {
   state = {
-    tel: "",
+    tel: '',
   };
 
   handleChange = ({ target }) => {
@@ -12,8 +13,11 @@ class Loginization extends Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
+    this.props.history.push({
+      pathname: '/profile/habitList',
+    });
     // alert(JSON.stringify(this.state));
   };
 
@@ -22,8 +26,9 @@ class Loginization extends Component {
     return (
       <>
         <div className={styles.header}>
-          <button type="button">Назад</button>
+          <NavLink to="/">Назад</NavLink>
         </div>
+
         <form
           action="submit"
           className={styles.regForm}
