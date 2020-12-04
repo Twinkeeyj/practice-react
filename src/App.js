@@ -1,15 +1,27 @@
-import React, { Component } from 'react';
+import React, { lazy, Component, Suspense } from 'react';
 import './App.css';
-import { Route } from 'react-router-dom';
-
-import Authentification from './components/Authentification/Authentification.js';
-import Loginization from './components/Loginization/Loginization';
-import Registration from './components/Registration/Registration';
-import Profile from './components/Profile/Profile.js';
 import Modal from './components/Modal/Modal';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import HabitsList from './components/HabitsList/HabitsList';
-
+import routes from './routes';
 import HabitForm from './components/HabitsList/HabitForm';
+// import HabitProfile from "./components/HabitsList/HabitProfile/HabitProfile"
+
+const AsynkAuthentification = lazy(() =>
+  import('./components/Authentification/Authentification.js'),
+);
+const AsynkRegistration = lazy(() =>
+  import('./components/Registration/Registration'),
+);
+const AsynkLoginization = lazy(() =>
+  import('./components/Loginization/Loginization'),
+);
+const AsynkProfile = lazy(() => import('./components/Profile/Profile.js'));
+const AsynkHabitProfile = lazy(() =>
+  import('./components/HabitsList/HabitProfile/HabitProfile.jsx'),
+);
+
+// const AsynkHabitsList = lazy(() => import('./components/HabitsList/HabitsList'));
 
 export default class App extends Component {
   state = {
@@ -23,23 +35,41 @@ export default class App extends Component {
   componentDidMount() {}
   componentDidUpdate(prevProps, prevState) {}
   render() {
+    console.log(this.state);
     return (
       <>
-        <Route path="/" exact component={Authentification} />
-        <Route path="/registr" exact component={Registration} />
-        <Route path="/login" exact component={Loginization} />
-        <Route path="/profile" exact component={Profile} />
-        <Route
-          path="/profile/habitList"
-          exact
-          render={props => (
-            <HabitsList
-              {...props}
-              showModal={this.state.showModal}
-              modalToggle={this.modalToggle}
-            />
-          )}
-        />
+        <Suspense fallback={<h3>Loading...</h3>}>
+          <Route
+            path={routes.Authentification}
+            exact
+            component={AsynkAuthentification}
+          />
+          <Route path={routes.Registration} component={AsynkRegistration} />
+          <Route path={routes.Loginization} component={AsynkLoginization} />
+          <Route path={routes.Profile} exact component={AsynkProfile} />
+          <Route
+            path={routes.HabitsList}
+            exact
+            render={props => (
+              <HabitsList
+                {...props}
+                showModal={this.state.showModal}
+                modalToggle={this.modalToggle}
+              />
+            )}
+          />
+          <Route
+            path={routes.HabitProfile}
+            exact
+            render={props => (
+              <AsynkHabitProfile
+                {...props}
+                showModal={this.state.showModal}
+                modalToggle={this.modalToggle}
+              />
+            )}
+          />
+        </Suspense>
         {/* <HabitsList showModal={this.state.showModal} modalToggle={this.modalToggle}  /> */}
       </>
     );

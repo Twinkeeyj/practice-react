@@ -3,20 +3,23 @@ import PropTypes from 'prop-types';
 import HabitItem from './HabitItem/HabitItem';
 import Modal from '../Modal/Modal';
 import HabitForm from '../HabitsList/HabitForm/HabitForm';
-import {NavLink} from "react-router-dom"
+import { NavLink } from 'react-router-dom';
+import Routes from "../../routes"
 
 export default class HabitsList extends Component {
   state = {
-    habits: [
-      {
-        id: '1',
-        title: 'Зарядка',
-        startDate: '',
-        progress: '',
-      },
-    ],
+    habits: [],
   };
-  toAddHabit = (habit) => {
+  componentDidMount() {
+    const array = JSON.parse(localStorage.getItem('state')) || [];
+    this.setState({ habits: array });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState !== this.state) {
+      localStorage.setItem('state', JSON.stringify(this.state.habits));
+    }
+  }
+  toAddHabit = habit => {
     this.setState(prevState => ({
       habits: [...prevState.habits, habit],
     }));
@@ -38,7 +41,7 @@ export default class HabitsList extends Component {
       <>
         <header>
           <div>Мой аккаунт</div>
-          <NavLink to="/profile">Назад</NavLink>
+          <NavLink to="/">Назад</NavLink>
           {/* <button type="button">x</button> */}
         </header>
         {this.props.showModal && (
@@ -55,12 +58,14 @@ export default class HabitsList extends Component {
           <ul>
             {habits.map(habit => {
               return (
+                <NavLink to={`${Routes.HabitsList}/${habit.id}`}>
                 <HabitItem
                   key={habit.id}
                   progress=""
                   // progress={() => this.toChangeProgress(habit.id)}
-                  title={habit.title}
+                  title={habit.title} id={habit.id}
                 />
+                </NavLink>
               );
             })}
           </ul>

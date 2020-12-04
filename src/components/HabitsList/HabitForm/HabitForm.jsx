@@ -17,6 +17,8 @@ export default class HabitForm extends Component {
   };
   closeId = null;
 
+
+
   handeSubmit = event => {
     event.preventDefault();
     alert(JSON.stringify(this.state, null, 2));
